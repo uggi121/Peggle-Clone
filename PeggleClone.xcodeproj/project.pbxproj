@@ -14,6 +14,15 @@
 		C8666AB523F4330D0049F52F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8666AB423F4330D0049F52F /* Assets.xcassets */; };
 		C8666AB823F4330D0049F52F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8666AB623F4330D0049F52F /* LaunchScreen.storyboard */; };
 		C8666AC123F434010049F52F /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC023F434010049F52F /* Vector.swift */; };
+		C8666ACB23F4367A0049F52F /* PersistenceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC223F4367A0049F52F /* PersistenceDelegate.swift */; };
+		C8666ACC23F4367A0049F52F /* Peg.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC323F4367A0049F52F /* Peg.swift */; };
+		C8666ACD23F4367A0049F52F /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC423F4367A0049F52F /* PersistenceError.swift */; };
+		C8666ACE23F4367A0049F52F /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC523F4367A0049F52F /* Point.swift */; };
+		C8666ACF23F4367A0049F52F /* SqlitePersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC623F4367A0049F52F /* SqlitePersistenceManager.swift */; };
+		C8666AD023F4367A0049F52F /* GameBoardDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC723F4367A0049F52F /* GameBoardDimensions.swift */; };
+		C8666AD123F4367A0049F52F /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC823F4367A0049F52F /* Model.swift */; };
+		C8666AD223F4367A0049F52F /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AC923F4367A0049F52F /* GameBoard.swift */; };
+		C8666AD323F4367A0049F52F /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666ACA23F4367A0049F52F /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +35,15 @@
 		C8666AB723F4330D0049F52F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8666AB923F4330D0049F52F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8666AC023F434010049F52F /* Vector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
+		C8666AC223F4367A0049F52F /* PersistenceDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceDelegate.swift; sourceTree = "<group>"; };
+		C8666AC323F4367A0049F52F /* Peg.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peg.swift; sourceTree = "<group>"; };
+		C8666AC423F4367A0049F52F /* PersistenceError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
+		C8666AC523F4367A0049F52F /* Point.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
+		C8666AC623F4367A0049F52F /* SqlitePersistenceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SqlitePersistenceManager.swift; sourceTree = "<group>"; };
+		C8666AC723F4367A0049F52F /* GameBoardDimensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoardDimensions.swift; sourceTree = "<group>"; };
+		C8666AC823F4367A0049F52F /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		C8666AC923F4367A0049F52F /* GameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
+		C8666ACA23F4367A0049F52F /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +81,15 @@
 				C8666AAF23F4330B0049F52F /* ViewController.swift */,
 				C8666AB123F4330B0049F52F /* Main.storyboard */,
 				C8666AC023F434010049F52F /* Vector.swift */,
+				C8666ACA23F4367A0049F52F /* Color.swift */,
+				C8666AC923F4367A0049F52F /* GameBoard.swift */,
+				C8666AC723F4367A0049F52F /* GameBoardDimensions.swift */,
+				C8666AC823F4367A0049F52F /* Model.swift */,
+				C8666AC323F4367A0049F52F /* Peg.swift */,
+				C8666AC223F4367A0049F52F /* PersistenceDelegate.swift */,
+				C8666AC423F4367A0049F52F /* PersistenceError.swift */,
+				C8666AC523F4367A0049F52F /* Point.swift */,
+				C8666AC623F4367A0049F52F /* SqlitePersistenceManager.swift */,
 				C8666AB423F4330D0049F52F /* Assets.xcassets */,
 				C8666AB623F4330D0049F52F /* LaunchScreen.storyboard */,
 				C8666AB923F4330D0049F52F /* Info.plist */,
@@ -162,8 +189,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8666ACF23F4367A0049F52F /* SqlitePersistenceManager.swift in Sources */,
+				C8666ACE23F4367A0049F52F /* Point.swift in Sources */,
+				C8666ACC23F4367A0049F52F /* Peg.swift in Sources */,
 				C8666AB023F4330B0049F52F /* ViewController.swift in Sources */,
+				C8666AD323F4367A0049F52F /* Color.swift in Sources */,
+				C8666AD223F4367A0049F52F /* GameBoard.swift in Sources */,
+				C8666ACD23F4367A0049F52F /* PersistenceError.swift in Sources */,
+				C8666AD023F4367A0049F52F /* GameBoardDimensions.swift in Sources */,
 				C8666AAC23F4330B0049F52F /* AppDelegate.swift in Sources */,
+				C8666ACB23F4367A0049F52F /* PersistenceDelegate.swift in Sources */,
+				C8666AD123F4367A0049F52F /* Model.swift in Sources */,
 				C8666AC123F434010049F52F /* Vector.swift in Sources */,
 				C8666AAE23F4330B0049F52F /* SceneDelegate.swift in Sources */,
 			);
