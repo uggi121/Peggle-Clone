@@ -1,24 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Icd-ih-jWf">
+    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <scene sceneID="ucQ-Uy-Sy1">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <viewController modalPresentationStyle="fullScreen" id="Icd-ih-jWf" customClass="ViewController" customModule="PeggleClone" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OWB-Ap-hQo">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="background" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fk8-qs-23c">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1167"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="oDF-0U-ck1" appends="YES" id="QGM-Fr-9NH"/>
+                                    <outletCollection property="gestureRecognizers" destination="0V9-h5-AC3" appends="YES" id="oZ9-YC-jQy"/>
+                                    <outletCollection property="gestureRecognizers" destination="11g-iL-R0D" appends="YES" id="zAP-vg-5Qg"/>
+                                </connections>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ufw-uo-qQ6" userLabel="Bar View">
+                                <rect key="frame" x="20" y="1167" width="984" height="179"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Qvv-ez-1nK" userLabel="Peg Stack">
+                                        <rect key="frame" x="0.0" y="0.0" width="266" height="128"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kXT-eV-zqR">
+                                                <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                <state key="normal" image="peg-blue"/>
+                                                <connections>
+                                                    <action selector="userTapsBluePegButton:" destination="Icd-ih-jWf" eventType="touchUpInside" id="rXa-l3-s22"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R72-Cc-qNf">
+                                                <rect key="frame" x="138" y="0.0" width="128" height="128"/>
+                                                <state key="normal" image="peg-orange"/>
+                                                <connections>
+                                                    <action selector="userTapsOrangePegButton:" destination="Icd-ih-jWf" eventType="touchUpInside" id="YQi-J7-7kP"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="DYe-YX-wRL">
+                                        <rect key="frame" x="8" y="141" width="196" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PCO-a1-OTP">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="30"/>
+                                                <state key="normal" title="BACK"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SHE-vT-Ila">
+                                                <rect key="frame" x="51" y="0.0" width="40" height="30"/>
+                                                <state key="normal" title="LOAD"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XQ3-d1-vCO">
+                                                <rect key="frame" x="102" y="0.0" width="37" height="30"/>
+                                                <state key="normal" title="SAVE"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QHI-e3-DSF">
+                                                <rect key="frame" x="150" y="0.0" width="46" height="30"/>
+                                                <state key="normal" title="RESET"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQR-1h-o68">
+                                        <rect key="frame" x="937" y="141" width="47" height="30"/>
+                                        <state key="normal" title="START"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8lg-VQ-F7Q" userLabel="Delete Action">
+                                        <rect key="frame" x="856" y="0.0" width="128" height="128"/>
+                                        <inset key="contentEdgeInsets" minX="-128" minY="-63" maxX="0.0" maxY="-65"/>
+                                        <inset key="imageEdgeInsets" minX="128" minY="60" maxX="0.0" maxY="64"/>
+                                        <state key="normal" image="delete"/>
+                                        <connections>
+                                            <action selector="userTapsDeletePegButton:" destination="Icd-ih-jWf" eventType="touchUpInside" id="F5f-Bo-arC"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Qvv-ez-1nK" firstAttribute="leading" secondItem="ufw-uo-qQ6" secondAttribute="leading" id="3dc-Bl-ZIR"/>
+                                    <constraint firstItem="DQR-1h-o68" firstAttribute="top" secondItem="DYe-YX-wRL" secondAttribute="top" id="Dfa-BI-iuq"/>
+                                    <constraint firstAttribute="trailing" secondItem="8lg-VQ-F7Q" secondAttribute="trailing" id="GMF-HT-4eS"/>
+                                    <constraint firstAttribute="trailing" secondItem="DQR-1h-o68" secondAttribute="trailing" id="Gzr-hc-N9h"/>
+                                    <constraint firstItem="DQR-1h-o68" firstAttribute="bottom" secondItem="ufw-uo-qQ6" secondAttribute="bottomMargin" id="JkD-5O-PH2"/>
+                                    <constraint firstItem="DYe-YX-wRL" firstAttribute="leading" secondItem="ufw-uo-qQ6" secondAttribute="leadingMargin" id="QGF-zL-f2d"/>
+                                    <constraint firstItem="DQR-1h-o68" firstAttribute="top" secondItem="ufw-uo-qQ6" secondAttribute="top" constant="141" id="QcQ-cz-ehe"/>
+                                    <constraint firstItem="8lg-VQ-F7Q" firstAttribute="top" secondItem="ufw-uo-qQ6" secondAttribute="top" id="ZYV-Rv-gM3"/>
+                                    <constraint firstItem="DYe-YX-wRL" firstAttribute="top" secondItem="Qvv-ez-1nK" secondAttribute="bottom" constant="13" id="fki-rl-5fk"/>
+                                    <constraint firstItem="DQR-1h-o68" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DYe-YX-wRL" secondAttribute="trailing" constant="8" symbolic="YES" id="pGD-oR-eZJ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ufw-uo-qQ6" firstAttribute="leading" secondItem="tv6-oQ-M0l" secondAttribute="leading" constant="20" id="LDh-9K-QuR"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="ufw-uo-qQ6" secondAttribute="bottom" id="XUP-9a-3W6"/>
+                            <constraint firstItem="ufw-uo-qQ6" firstAttribute="top" secondItem="Fk8-qs-23c" secondAttribute="bottom" id="ai4-v3-SrP"/>
+                            <constraint firstItem="Fk8-qs-23c" firstAttribute="leading" secondItem="tv6-oQ-M0l" secondAttribute="leading" id="iOC-RS-UBX"/>
+                            <constraint firstItem="Fk8-qs-23c" firstAttribute="top" secondItem="tv6-oQ-M0l" secondAttribute="top" id="oTR-eX-1p9"/>
+                            <constraint firstItem="tv6-oQ-M0l" firstAttribute="trailing" secondItem="ufw-uo-qQ6" secondAttribute="trailing" constant="20" id="plx-29-g89"/>
+                            <constraint firstItem="Fk8-qs-23c" firstAttribute="trailing" secondItem="tv6-oQ-M0l" secondAttribute="trailing" id="qj0-FF-las"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="tv6-oQ-M0l"/>
                     </view>
+                    <navigationItem key="navigationItem" id="eoy-0r-ph8"/>
+                    <connections>
+                        <outlet property="bluePegButton" destination="kXT-eV-zqR" id="mdU-1f-on1"/>
+                        <outlet property="deletePegButton" destination="8lg-VQ-F7Q" id="Vcq-IO-BdU"/>
+                        <outlet property="orangePegButton" destination="R72-Cc-qNf" id="gl8-Z5-8j4"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wWU-1p-AGm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="oDF-0U-ck1"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="0V9-h5-AC3"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" maximumNumberOfTouches="1" id="11g-iL-R0D"/>
             </objects>
+            <point key="canvasLocation" x="859.5703125" y="633.3821376281112"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="background" width="4000" height="3000"/>
+        <image name="delete" width="256" height="256"/>
+        <image name="peg-blue" width="128" height="128"/>
+        <image name="peg-orange" width="128" height="128"/>
+    </resources>
 </document>
