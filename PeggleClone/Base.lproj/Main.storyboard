@@ -15,7 +15,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="background" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fk8-qs-23c">
+                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="background" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fk8-qs-23c" customClass="UIGameView" customModule="PeggleClone" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="1167"/>
                                 <gestureRecognizers/>
                                 <connections>
@@ -70,6 +70,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQR-1h-o68">
                                         <rect key="frame" x="937" y="141" width="47" height="30"/>
                                         <state key="normal" title="START"/>
+                                        <connections>
+                                            <action selector="userPressesStartButton:" destination="Icd-ih-jWf" eventType="touchUpInside" id="aM6-za-rBt"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8lg-VQ-F7Q" userLabel="Delete Action">
                                         <rect key="frame" x="856" y="0.0" width="128" height="128"/>
@@ -111,11 +114,16 @@
                     <connections>
                         <outlet property="bluePegButton" destination="kXT-eV-zqR" id="mdU-1f-on1"/>
                         <outlet property="deletePegButton" destination="8lg-VQ-F7Q" id="Vcq-IO-BdU"/>
+                        <outlet property="gameView" destination="Fk8-qs-23c" id="jFe-0N-YWg"/>
                         <outlet property="orangePegButton" destination="R72-Cc-qNf" id="gl8-Z5-8j4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wWU-1p-AGm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="oDF-0U-ck1"/>
+                <tapGestureRecognizer id="oDF-0U-ck1">
+                    <connections>
+                        <action selector="userTapsGameBoard:" destination="Icd-ih-jWf" id="iSp-Y8-MEe"/>
+                    </connections>
+                </tapGestureRecognizer>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="0V9-h5-AC3"/>
                 <panGestureRecognizer minimumNumberOfTouches="1" maximumNumberOfTouches="1" id="11g-iL-R0D"/>
             </objects>
