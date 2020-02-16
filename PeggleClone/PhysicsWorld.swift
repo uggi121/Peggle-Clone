@@ -12,7 +12,6 @@ class PhysicsWorld {
     var bodies = [String: PhysicsBody]()
     private let physicsKinematicsSimulator = PhysicsKinematicsSimulator()
     private let physicsCollisionSimulator = PhysicsCollisionSimulator()
-    var isGravityOn: Bool = false
 
     func addPhysicsBody(body: PhysicsBody, tag: String) -> Bool {
         guard !bodies.contains(where: { $0.key == tag }) else {
@@ -43,7 +42,7 @@ class PhysicsWorld {
         physicsKinematicsSimulator.simulateWorldFor(time: time, bodies: &bodies)
     }
 
-    func simulateCollisions() {
+    func simulateCollisions() -> [String] {
         physicsCollisionSimulator.simulateCollisions(bodies: &bodies)
     }
 }

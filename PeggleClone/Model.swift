@@ -13,18 +13,35 @@ class Model {
 
     private let gameBoard: GameBoard
     private var persistenceDelegate: PersistenceDelegate?
+    private var ball: Ball?
+    private let physicsWorld: PhysicsWorld
+    private var counter = 0
+    private var tagMap = [String: Point]()
 
     /// Initializes the model with the specified dimensions.
     init(dimensions: GameBoardDimensions) throws {
         self.gameBoard = GameBoard(dimensions: dimensions)
         let persistenceDelegate = try SqlitePersistenceManager()
         self.persistenceDelegate = persistenceDelegate
+        self.ball = nil
+        self.physicsWorld = PhysicsWorld()
     }
 
     /// Adds a peg to the model.
     /// - Returns: `true` if the `Peg` was successfully added.
     func addPeg(peg: Peg) -> Bool {
-        gameBoard.addPeg(peg: peg)
+        let wasAdded = gameBoard.addPeg(peg: peg)
+
+        if wasAdded {
+            let tag = String(counter)
+            let centerOfPeg = Vector(x: peg.center.x, y: peg.center.y)
+            let physicsBody = PegPhysicsBody(position: centerOfPeg)
+            _ = physicsWorld.addPhysicsBody(body: physicsBody, tag: tag)
+            tagMap[tag] = peg.center
+            counter += 1
+        }
+
+        return wasAdded
     }
 
     /// Returns `true` if the specified `Peg` exists in the model.
@@ -63,5 +80,62 @@ class Model {
     /// - Throws: `PersistenceError` if the file cannot be saved under the specified name.
     func saveGame(fileName: String) throws {
         try persistenceDelegate?.saveGame(gameBoard: gameBoard, fileName: fileName)
+    }
+
+    func doesBallExist() -> Bool {
+        if ball == nil {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    func launchBallWithVelocity(velocity: Point) {
+        guard ball == nil else {
+            return
+        }
+
+        let topCenterPoint = gameBoard.getTopCenterPoint(offsetFromTop: 16)
+        let topCenterPosition = Vector(x: topCenterPoint.x, y: topCenterPoint.y)
+        let launchVelocity = Vector(x: velocity.x, y: velocity.y)
+
+        ball = Ball(position: topCenterPosition, velocity: launchVelocity, radius: 16)
+        physicsWorld.addPhysicsBody(body: ball!, tag: "ball")
+        let gravityVector = Vector(x: 0, y: -PhysicsConstants.accelerationDueToGravity * 40)
+        physicsWorld.applyForceOnBody(bodyTag: "ball", force: gravityVector)
+    }
+
+    func updateFor(time: Double) {
+        print(ball?.position.x, ball?.position.y)
+        physicsWorld.simulateFor(time: time)
+
+        if ball != nil && ball!.position.y < 16 {
+            ball = nil
+            _ = physicsWorld.removePhysicsBody(bodyTag: "ball")
+        }
+
+        let collidedBodyTags = physicsWorld.simulateCollisions()
+        for tag in collidedBodyTags {
+            let pegCenter = tagMap[tag]
+            if pegCenter != nil {
+                gameBoard.highlightPeg(at: pegCenter!)
+            }
+        }
+        
+    }
+
+    func getBallPosition() -> Point? {
+        guard ball != nil else {
+            return nil
+        }
+
+        let position = ball!.position
+        let point = Point(x: position.x, y: position.y)
+
+        return point
+    }
+
+    func getHighlightedPegCoordinates() -> [Point] {
+        gameBoard.getHighlightedPegCoordinates()
     }
 }

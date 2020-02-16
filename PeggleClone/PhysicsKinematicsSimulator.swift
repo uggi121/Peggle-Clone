@@ -23,6 +23,11 @@ struct PhysicsKinematicsSimulator {
     }
 
     func calculateAcceleration(_ body: PhysicsBody) -> Vector {
+
+        guard body.mass != Double.infinity else {
+            return Vector(x: 0, y: 0)
+        }
+
         let forces = body.forces
         let resultantForce = forces.reduce(Vector(x: 0, y: 0), {
             resultant, vector in
@@ -34,6 +39,11 @@ struct PhysicsKinematicsSimulator {
     }
 
     func calculateNewVelocity(body: PhysicsBody, acceleration: Vector, time: Double) -> Vector {
+
+        guard body.mass != Double.infinity else {
+            return Vector(x: 0, y: 0)
+        }
+
         let velocity = body.velocity
         let horizontalVelocity = velocity.x + (acceleration.x * time)
         let verticalVelocity = velocity.y + (acceleration.y * time)

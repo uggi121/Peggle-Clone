@@ -46,10 +46,10 @@ class ViewController: UIViewController {
 
     @IBAction func userPressesStartButton(_ sender: UIButton) {
         gameState = .active
+        previous = date.timeIntervalSinceReferenceDate
         let displayLink = CADisplayLink(target: self, selector: #selector(gameLoop))
         displayLink.preferredFramesPerSecond = 60
         displayLink.add(to: .main, forMode: .default)
-        previous = date.timeIntervalSinceReferenceDate
     }
 
     let date = Date()
@@ -58,15 +58,21 @@ class ViewController: UIViewController {
 
     @objc private func gameLoop(displayLink: CADisplayLink) {
         //print(displayLink.timestamp)
-        var current = date.timeIntervalSinceReferenceDate
+        let current = date.timeIntervalSinceReferenceDate
         var elapsed = current - previous
         previous = current
         lag += elapsed
 
+        print(lag)
+        /*
+        print(lag)
         while lag > (0.0167) {
-            update()
+            print(displayLink.timestamp)
+            model.updateFor(time: 0.0167)
             lag -= 0.0167
         }
+        */
+        model.updateFor(time: 0.0167)
 
         render()
     }
@@ -87,8 +93,21 @@ class ViewController: UIViewController {
                 return
             }
         case .active:
-            print("Tapped")
+            let tapLocation = sender.location(in: gameView)
+            let ballLaunchVelocity = getBallLaunchVelocity(tapLocation: tapLocation)
+            model.launchBallWithVelocity(velocity: ballLaunchVelocity)
         }
+    }
+
+    private func getBallLaunchVelocity(tapLocation: CGPoint) -> Point {
+        let topCenterPoint = gameView.topCenterPoint
+        let x = tapLocation.x - topCenterPoint.x
+        var y = tapLocation.y - topCenterPoint.y
+        if y > 250 {
+            y = 250
+        }
+        let launchDirection = Point(x: Double(x), y: -Double(y))
+        return launchDirection
     }
 
     private func selectButton(_ sender: UIButton) {
@@ -160,7 +179,8 @@ class ViewController: UIViewController {
 
     private func addPegToModel(_ location: CGPoint, _ color: Color) -> Bool {
         let point = Utils.convertCGPointToPoint(location)
-        let peg = Peg(center: point,
+        let adjustedPoint = Point(x: point.x, y: Double(gameView.bounds.maxY) - point.y)
+        let peg = Peg(center: adjustedPoint,
                       radius: LevelDesignerConstants.pegRadius,
                       color: color)
         return model.addPeg(peg: peg!)
@@ -181,11 +201,35 @@ class ViewController: UIViewController {
     /// Deletes the `Peg` at the tapped location from the model and the UI, if the peg exists.
     private func deletePeg(_ location: CGPoint) {
         let point = Utils.convertCGPointToPoint(location)
-        guard let locationOfRemovedPeg = model.removePeg(at: point) else {
+        let adjustedPoint = Point(x: point.x, y: Double(gameView.bounds.maxY) - point.y)
+        guard let locationOfRemovedPeg = model.removePeg(at: adjustedPoint) else {
             return
         }
 
         gameView.removePegView(at: Utils.convertPointToCGPoint(locationOfRemovedPeg))
     }
 
+    var isBallActive = false
+    private func render() {
+        let ballPosition = model.getBallPosition()
+        if ballPosition != nil {
+            let correctedPosition = Point(x: ballPosition!.x, y: Double(gameView.frame.height - gameView.frame.origin.y) - ballPosition!.y)
+            let ballImageView = UIPegFactory.makeBallImageView(center: Utils.convertPointToCGPoint(correctedPosition), radius: 16)
+            //gameView.removeBallImageView()
+            if !isBallActive {
+                gameView.addBallImageView(ballImageView)
+                isBallActive = true
+            } else {
+                gameView.moveBallTo(Utils.convertPointToCGPoint(correctedPosition))
+            }
+        } else {
+            gameView.removeBallImageView()
+            gameView.popHighlightedPegs()
+            isBallActive = false
+        }
+
+        let highlightedPegCoordinates = model.getHighlightedPegCoordinates()
+        let adjustedCoordinates = highlightedPegCoordinates.map({ Point(x: $0.x, y: Double(gameView.frame.height - gameView.frame.origin.y) - $0.y) })
+        adjustedCoordinates.forEach({ gameView.highlightPeg(at: Utils.convertPointToCGPoint($0)) })
+    }
 }

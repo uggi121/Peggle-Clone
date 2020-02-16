@@ -16,6 +16,8 @@
 		C838C19523F7F3D30095E02D /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19123F7F3D20095E02D /* Messages.swift */; };
 		C838C19723F858AD0095E02D /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19623F858AD0095E02D /* GameState.swift */; };
 		C838C19923F85B9F0095E02D /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19823F85B9F0095E02D /* Ball.swift */; };
+		C838C19B23F876BA0095E02D /* PegPhysicsBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19A23F876BA0095E02D /* PegPhysicsBody.swift */; };
+		C838C19D23F9580D0095E02D /* UIPegImageView+Fade.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19C23F9580C0095E02D /* UIPegImageView+Fade.swift */; };
 		C8666AAC23F4330B0049F52F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AAB23F4330B0049F52F /* AppDelegate.swift */; };
 		C8666AAE23F4330B0049F52F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AAD23F4330B0049F52F /* SceneDelegate.swift */; };
 		C8666AB023F4330B0049F52F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AAF23F4330B0049F52F /* ViewController.swift */; };
@@ -50,6 +52,8 @@
 		C838C19123F7F3D20095E02D /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Messages.swift; path = ../../../PS2/Peggle/Messages.swift; sourceTree = "<group>"; };
 		C838C19623F858AD0095E02D /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		C838C19823F85B9F0095E02D /* Ball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
+		C838C19A23F876BA0095E02D /* PegPhysicsBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegPhysicsBody.swift; sourceTree = "<group>"; };
+		C838C19C23F9580C0095E02D /* UIPegImageView+Fade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPegImageView+Fade.swift"; sourceTree = "<group>"; };
 		C8666AA823F4330B0049F52F /* PeggleClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeggleClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8666AAB23F4330B0049F52F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C8666AAD23F4330B0049F52F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +119,7 @@
 				C8666AC023F434010049F52F /* Vector.swift */,
 				C8666AD423F43E5E0049F52F /* PhysicsKinematicsSimulator.swift */,
 				C8666AD823F538040049F52F /* PhysicsWorld.swift */,
+				C838C19C23F9580C0095E02D /* UIPegImageView+Fade.swift */,
 				C8666ADE23F6B6270049F52F /* PhysicsCollisionSimulator.swift */,
 				C8380BFF23F7E0BA004512EA /* PhysicsConstants.swift */,
 				C8666ACA23F4367A0049F52F /* Color.swift */,
@@ -130,6 +135,7 @@
 				C838C18E23F7F3D20095E02D /* UIPegImageView.swift */,
 				C8666ADC23F6A0040049F52F /* Shape.swift */,
 				C8666AC323F4367A0049F52F /* Peg.swift */,
+				C838C19A23F876BA0095E02D /* PegPhysicsBody.swift */,
 				C8666AD623F43E750049F52F /* PhysicsBody.swift */,
 				C8666AC223F4367A0049F52F /* PersistenceDelegate.swift */,
 				C8666AC423F4367A0049F52F /* PersistenceError.swift */,
@@ -239,6 +245,7 @@
 				C838C19423F7F3D30095E02D /* UIGameView.swift in Sources */,
 				C8666ACE23F4367A0049F52F /* Point.swift in Sources */,
 				C8666ACC23F4367A0049F52F /* Peg.swift in Sources */,
+				C838C19B23F876BA0095E02D /* PegPhysicsBody.swift in Sources */,
 				C8666ADD23F6A0040049F52F /* Shape.swift in Sources */,
 				C8666AE123F6B7070049F52F /* BoundingBox.swift in Sources */,
 				C8666AB023F4330B0049F52F /* ViewController.swift in Sources */,
@@ -249,6 +256,7 @@
 				C838C19923F85B9F0095E02D /* Ball.swift in Sources */,
 				C8666ACD23F4367A0049F52F /* PersistenceError.swift in Sources */,
 				C8666AD923F538040049F52F /* PhysicsWorld.swift in Sources */,
+				C838C19D23F9580D0095E02D /* UIPegImageView+Fade.swift in Sources */,
 				C8666AD023F4367A0049F52F /* GameBoardDimensions.swift in Sources */,
 				C838C19723F858AD0095E02D /* GameState.swift in Sources */,
 				C8666ADF23F6B6270049F52F /* PhysicsCollisionSimulator.swift in Sources */,

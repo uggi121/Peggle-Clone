@@ -9,10 +9,10 @@
 import Foundation
 
 struct PhysicsCollisionSimulator {
-    func simulateCollisions(bodies: inout [String : PhysicsBody]) {
+    func simulateCollisions(bodies: inout [String : PhysicsBody]) -> [String] {
         let boundingBoxes = bodies.mapValues({ $0.computeBoundingBox() })
         let possiblyCollidingBoxes = getPossiblyCollidingBoxes(boundingBoxes)
-        resolveAllCollisions(&bodies, possiblyCollidingBoxes)
+        return resolveAllCollisions(&bodies, possiblyCollidingBoxes)
     }
 
     /*
@@ -36,7 +36,7 @@ struct PhysicsCollisionSimulator {
     */
 
     private func getPossiblyCollidingBoxes(_ boundingBoxes: [String: BoundingBox]) -> [String : BoundingBox] {
-        var possiblyCollidingBoundingBoxes = [String : BoundingBox]()
+        var possiblyCollidingBoundingBoxes = [String: BoundingBox]()
         for (tag, box) in boundingBoxes {
             for (innerTag, innerBox) in boundingBoxes {
                 if box.intersectsWith(innerBox) {
@@ -48,14 +48,20 @@ struct PhysicsCollisionSimulator {
         return possiblyCollidingBoundingBoxes
     }
 
-    private func resolveAllCollisions(_ bodies: inout [String: PhysicsBody], _ boundingBoxes: [String : BoundingBox]) {
+    private func resolveAllCollisions(_ bodies: inout [String: PhysicsBody], _ boundingBoxes: [String : BoundingBox]) -> [String] {
+        var tagsOfCollidingBodies = [String]()
         for (tag, _) in boundingBoxes {
-            for (innerTag, _) in boundingBoxes {
+            for (innerTag, _) in boundingBoxes where tag != innerTag {
                 if areColliding(bodies[tag]!, bodies[innerTag]!) {
-                    resolveCollision(tag, innerTag, &bodies)
+                    tagsOfCollidingBodies.append(tag)
+                    tagsOfCollidingBodies.append(innerTag)
+                    //resolveCollision(tag, innerTag, &bodies)
+                    //performPositionalCorrections(tag, innerTag, &bodies)
                 }
             }
         }
+
+        return tagsOfCollidingBodies
     }
 
     private func areColliding(_ firstBody: PhysicsBody, _ secondBody: PhysicsBody) -> Bool {
@@ -88,9 +94,11 @@ struct PhysicsCollisionSimulator {
         let collisionNormal = findCollisionNormal(firstObject, secondObject)
         let velocityAlongNormal = relativeVelocity.dotProductWith(vector: collisionNormal)
 
+        /*
         if velocityAlongNormal > 0 {
             return
         }
+        */
 
         var impulse = -(1 + PhysicsConstants.coefficientOfRestitution) * velocityAlongNormal
         impulse /= (1 / firstObject.mass) + (1 / secondObject.mass)
@@ -112,6 +120,38 @@ struct PhysicsCollisionSimulator {
         case (.circle, .circle):
             let collisionNormal = firstBody.position.subtract(vector: secondBody.position)
             return collisionNormal.normalize()
+        }
+    }
+
+    private func performPositionalCorrections(_ firstTag: String, _ secondTag: String, _ bodies: inout [String: PhysicsBody]) {
+
+        let firstBody = bodies[firstTag]
+        let secondBody = bodies[secondTag]
+
+        guard firstBody != nil, secondBody != nil else {
+            return
+        }
+
+        let firstShape = firstBody!.shape
+        let secondShape = secondBody!.shape
+
+        switch (firstShape, secondShape) {
+        case (.circle(let firstRadius), .circle(let secondRadius)):
+            let distance = sqrt(firstBody!.position.squareDistanceTo(vector: secondBody!.position))
+            let sumOfRadii = firstRadius + secondRadius
+            let penetration = sumOfRadii - distance
+            let collisionNormal = findCollisionNormal(firstBody!, secondBody!)
+            let percent = 1.0
+            let threshold = 0.01
+            let correctionScalar = max(penetration - threshold, 0.0) / (1 / firstBody!.mass + 1 / secondBody!.mass) * percent
+            let correctionVector = collisionNormal.multiplyWithScalar(scalar: correctionScalar)
+            let firstBodyCorrection = correctionVector.multiplyWithScalar(scalar: 1 / firstBody!.mass)
+            let secondBodyCorrection = correctionVector.multiplyWithScalar(scalar: 1 / secondBody!.mass)
+
+            bodies[firstTag]!.position = firstBody!.position.subtract(vector: firstBodyCorrection)
+            bodies[secondTag]!.position = secondBody!.position.addTo(vector: secondBodyCorrection)
+        default:
+            return
         }
     }
 

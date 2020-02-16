@@ -77,4 +77,22 @@ class GameBoard {
 
         return sumOfRadii > distanceBetweenCenters
     }
+
+    func getTopCenterPoint(offsetFromTop: Double) -> Point {
+        Point(x: (dimensions.xMax + dimensions.xMin) / 2, y: dimensions.yMax - offsetFromTop)
+    }
+
+    func highlightPeg(at point: Point) {
+        let pegsContainingPoint = pegs.filter({ $0.containsPoint(point: point) })
+        guard !pegsContainingPoint.isEmpty else {
+            return
+        }
+
+        pegsContainingPoint.first!.highlight()
+    }
+
+    func getHighlightedPegCoordinates() -> [Point] {
+        let highlightedPegs = pegs.filter({ $0.isHighlighted })
+        return highlightedPegs.map({ $0.center })
+    }
 }
