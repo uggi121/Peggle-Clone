@@ -78,10 +78,13 @@ class GameBoard {
         return sumOfRadii > distanceBetweenCenters
     }
 
+    /// Returns the `Point` at the top-center of the game board.
     func getTopCenterPoint(offsetFromTop: Double) -> Point {
         Point(x: (dimensions.xMax + dimensions.xMin) / 2, y: dimensions.yMax - offsetFromTop)
     }
 
+    /// Highlights the `Peg` present at the input `Point`.
+    /// If no peg exists at the entered point, nothing is done.
     func highlightPeg(at point: Point) {
         let pegsContainingPoint = pegs.filter({ $0.containsPoint(point: point) })
         guard !pegsContainingPoint.isEmpty else {
@@ -91,11 +94,13 @@ class GameBoard {
         pegsContainingPoint.first!.highlight()
     }
 
+    /// Returns an array of `Point`s containing the locations of highlighted pegs.
     func getHighlightedPegCoordinates() -> [Point] {
         let highlightedPegs = pegs.filter({ $0.isHighlighted })
         return highlightedPegs.map({ $0.center })
     }
 
+    /// Removes highlighted pegs and returns them in a `Set`.
     func removeHighlightedPegs() -> Set<Peg> {
         let highlightedPegs = pegs.filter({ $0.isHighlighted })
         pegs.subtract(highlightedPegs)

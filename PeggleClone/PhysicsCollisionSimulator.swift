@@ -30,7 +30,7 @@ struct PhysicsCollisionSimulator {
     /// Simulates collisions between the entered `PhysicsBody` objects.
     /// Resolves collisions and updates the velocities of colliding objects.
     /// Performs position correction to alleviate overlap where necessary.
-    func simulateCollisions(bodies: inout [String : PhysicsBody]) -> [String] {
+    func simulateCollisions(bodies: inout [String: PhysicsBody]) -> [String] {
         let boundingBoxes = bodies.mapValues({ $0.computeBoundingBox() })
         let possiblyCollidingBoxes = getPossiblyCollidingBoxes(boundingBoxes)
         let collidedTags = resolveAllCollisions(&bodies, possiblyCollidingBoxes)
@@ -103,10 +103,15 @@ struct PhysicsCollisionSimulator {
         let collisionNormal = findCollisionNormal(firstObject, secondObject)
         let velocityAlongNormal = relativeVelocity.dotProductWith(vector: collisionNormal)
 
-        let impulseVector = calculateImpulse(collisionNormal: collisionNormal, velocityAlongNormal: velocityAlongNormal, massOfFirstObject: firstObject.mass, massOfSecondObject: secondObject.mass)
+        let impulseVector = calculateImpulse(collisionNormal: collisionNormal,
+                                             velocityAlongNormal: velocityAlongNormal,
+                                             massOfFirstObject: firstObject.mass,
+                                             massOfSecondObject: secondObject.mass)
 
-        let firstObjectVelocityChange = impulseVector.multiplyWithScalar(scalar: PhysicsConstants.collisionVelocityMultiplier / firstObject.mass)
-        let secondObjectVelocityChange = impulseVector.multiplyWithScalar(scalar: PhysicsConstants.collisionVelocityMultiplier / secondObject.mass)
+        let firstObjectVelocityChange = impulseVector.multiplyWithScalar(
+            scalar: PhysicsConstants.collisionVelocityMultiplier / firstObject.mass)
+        let secondObjectVelocityChange = impulseVector.multiplyWithScalar(
+            scalar: PhysicsConstants.collisionVelocityMultiplier / secondObject.mass)
 
         bodies[firstTag]!.velocity = (bodies[firstTag]?.velocity.subtract(vector: firstObjectVelocityChange))!
         bodies[secondTag]!.velocity = (bodies[secondTag]?.velocity.addTo(vector: secondObjectVelocityChange))!
@@ -138,7 +143,9 @@ struct PhysicsCollisionSimulator {
         }
     }
 
-    private func performPositionalCorrections(_ firstTag: String, _ secondTag: String, _ bodies: inout [String: PhysicsBody]) {
+    private func performPositionalCorrections(_ firstTag: String,
+                                              _ secondTag: String,
+                                              _ bodies: inout [String: PhysicsBody]) {
 
         let firstBody = bodies[firstTag]
         let secondBody = bodies[secondTag]
@@ -159,7 +166,10 @@ struct PhysicsCollisionSimulator {
         }
     }
 
-    private func correctCollidingCirclePositions(_ firstTag: String, _ secondTag: String, _ bodies: inout [String: PhysicsBody], _ penetration: Double) {
+    private func correctCollidingCirclePositions(_ firstTag: String,
+                                                 _ secondTag: String,
+                                                 _ bodies: inout [String: PhysicsBody],
+                                                 _ penetration: Double) {
 
         guard penetration > 0 else {
             return
@@ -176,11 +186,15 @@ struct PhysicsCollisionSimulator {
         let positionCorrectionPercentageMultipler = 1.0
         let threshold = 0.01
 
-        let correctionScalar = max(penetration - threshold, 0.0) / (1 / firstBody!.mass + 1 / secondBody!.mass) * positionCorrectionPercentageMultipler
+        let correctionScalar = max(penetration - threshold, 0.0)
+            / (1 / firstBody!.mass + 1 / secondBody!.mass)
+            * positionCorrectionPercentageMultipler
         let correctionVector = collisionNormal.multiplyWithScalar(scalar: correctionScalar)
 
-        let firstBodyCorrection = correctionVector.multiplyWithScalar(scalar: PhysicsConstants.collisionPositionMultiplier / firstBody!.mass)
-        let secondBodyCorrection = correctionVector.multiplyWithScalar(scalar: PhysicsConstants.collisionPositionMultiplier / secondBody!.mass)
+        let firstBodyCorrection = correctionVector.multiplyWithScalar(
+            scalar: PhysicsConstants.collisionPositionMultiplier / firstBody!.mass)
+        let secondBodyCorrection = correctionVector.multiplyWithScalar(
+            scalar: PhysicsConstants.collisionPositionMultiplier / secondBody!.mass)
 
         bodies[firstTag]!.position = firstBody!.position.subtract(vector: firstBodyCorrection)
         bodies[secondTag]!.position = secondBody!.position.subtract(vector: secondBodyCorrection)

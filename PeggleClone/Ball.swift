@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Models the ball launched by the user.
 class Ball: PhysicsBody {
 
     var mass: Double = 1.0
@@ -17,6 +18,7 @@ class Ball: PhysicsBody {
     var shape: Shape
     let radius: Double
 
+    /// Returns the bounding box of the ball.
     func computeBoundingBox() -> BoundingBox {
         let min = Vector(x: self.position.x - radius, y: self.position.y - radius)
         let max = Vector(x: self.position.x + radius, y: self.position.y + radius)

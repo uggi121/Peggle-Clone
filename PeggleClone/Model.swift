@@ -82,6 +82,7 @@ class Model {
         try persistenceDelegate?.saveGame(gameBoard: gameBoard, fileName: fileName)
     }
 
+    /// Returns true if a ball launched by the user is currently in play.
     func doesBallExist() -> Bool {
         if ball == nil {
             return false
@@ -90,44 +91,54 @@ class Model {
         }
     }
 
+    /// Launches a ball from the top center of the screen with the entered velocity.
     func launchBallWithVelocity(velocity: Point) {
         guard ball == nil else {
             return
         }
 
-        let topCenterPoint = gameBoard.getTopCenterPoint(offsetFromTop: 16)
+        let topCenterPoint = gameBoard.getTopCenterPoint(offsetFromTop: GameEngineConstants.ballRadius)
         let topCenterPosition = Vector(x: topCenterPoint.x, y: topCenterPoint.y)
         var launchVelocity = Vector(x: velocity.x, y: velocity.y)
         let magnitude = launchVelocity.magnitude
-        let thresholdVelocity = 250.0
-        if magnitude > thresholdVelocity {
-            launchVelocity = launchVelocity.multiplyWithScalar(scalar: 250 / magnitude)
+        if magnitude > PhysicsConstants.thresholdBallLaunchVelocity {
+            launchVelocity = launchVelocity.multiplyWithScalar(
+                scalar: PhysicsConstants.thresholdBallLaunchVelocity / magnitude)
         }
 
-        ball = Ball(position: topCenterPosition, velocity: launchVelocity, radius: 16)
-        physicsWorld.addPhysicsBody(body: ball!, tag: "ball")
+        ball = Ball(position: topCenterPosition, velocity: launchVelocity, radius: GameEngineConstants.ballRadius)
+        _ = physicsWorld.addPhysicsBody(body: ball!, tag: GameEngineConstants.ballTag)
         let gravityVector = Vector(x: 0, y: -PhysicsConstants.accelerationDueToGravity * 20)
-        physicsWorld.applyForceOnBody(bodyTag: "ball", force: gravityVector)
+        physicsWorld.applyForceOnBody(bodyTag: GameEngineConstants.ballTag, force: gravityVector)
     }
 
-    func updateFor(time: Double) {
-        //print(ball?.position.x, ball?.position.y)
-        physicsWorld.simulateFor(time: time)
+    private func removeBall() {
+        ball = nil
+        _ = physicsWorld.removePhysicsBody(bodyTag: GameEngineConstants.ballTag)
+        let removedPegs = gameBoard.removeHighlightedPegs()
+        removedPegs.forEach({ physicsWorld.removePhysicsBody(
+            bodyTag: tagMap.key(forValue: $0.center)!) })
+    }
 
-        if ball != nil && ball!.position.y < 16 {
-            ball = nil
-            _ = physicsWorld.removePhysicsBody(bodyTag: "ball")
-            let removedPegs = gameBoard.removeHighlightedPegs()
-            removedPegs.forEach({ physicsWorld.removePhysicsBody(bodyTag: tagMap.key(forValue: $0.center)!) })
-        }
-
-        let collidedBodyTags = physicsWorld.simulateCollisions()
+    private func highlightCollidedPegs(_ collidedBodyTags: [String]) {
         for tag in collidedBodyTags {
             let pegCenter = tagMap[tag]
             if pegCenter != nil {
                 gameBoard.highlightPeg(at: pegCenter!)
             }
         }
+    }
+
+    func updateFor(time: Double) {
+        physicsWorld.simulateFor(time: time)
+
+        let canBallBeRemoved = ball != nil && ball!.position.y < GameEngineConstants.ballRadius
+        if canBallBeRemoved {
+            removeBall()
+        }
+
+        let collidedBodyTags = physicsWorld.simulateCollisions()
+        highlightCollidedPegs(collidedBodyTags)
     }
 
     func getBallPosition() -> Point? {

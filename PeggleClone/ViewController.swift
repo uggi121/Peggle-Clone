@@ -134,7 +134,7 @@ class ViewController: UIViewController {
         }
 
         let resizedImage = Utils.resizeImage(image: selectedStateImage,
-                                             targetSize: LevelDesignerConstants.pegButtonSize)
+                                             targetSize: UIConstants.pegButtonSize)
         button.setImage(resizedImage, for: .selected)
     }
 
@@ -146,7 +146,7 @@ class ViewController: UIViewController {
 
     private func initializeModel() {
         let gameViewFrame = gameView.frame
-        let safetyBuffer = Double(LevelDesignerConstants.pegRadius)
+        let safetyBuffer = Double(GameEngineConstants.pegRadius)
 
         let xMin = 0.0
         let yMin = 0.0
@@ -177,7 +177,7 @@ class ViewController: UIViewController {
         let point = Utils.convertCGPointToPoint(location)
         let adjustedPoint = Point(x: point.x, y: Double(gameView.bounds.maxY) - point.y)
         let peg = Peg(center: adjustedPoint,
-                      radius: LevelDesignerConstants.pegRadius,
+                      radius: GameEngineConstants.pegRadius,
                       color: color)
         return model.addPeg(peg: peg!)
     }
@@ -186,9 +186,9 @@ class ViewController: UIViewController {
         let image: UIPegImageView
         if color == .blue {
             image = UIPegFactory.makeBluePegImageView(
-                center: location, radius: LevelDesignerConstants.pegRadius)
+                center: location, radius: GameEngineConstants.pegRadius)
         } else {
-            image = UIPegFactory.makeOrangePegImageView(center: location, radius: LevelDesignerConstants.pegRadius)
+            image = UIPegFactory.makeOrangePegImageView(center: location, radius: GameEngineConstants.pegRadius)
         }
 
         gameView.addPegView(image)

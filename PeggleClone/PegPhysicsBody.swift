@@ -8,13 +8,14 @@
 
 import Foundation
 
+/// Represents a peg in the physics world.
 class PegPhysicsBody: PhysicsBody {
-    var mass: Double = Double.infinity
-    var velocity: Vector = Vector(x: 0, y: 0)
+    var mass = Double.infinity
+    var velocity = Vector(x: 0, y: 0)
     var forces = [Vector]()
     var position: Vector
     var shape: Shape = .circle(32)
-    
+
     func computeBoundingBox() -> BoundingBox {
         let min = Vector(x: self.position.x - 32, y: self.position.y - 32)
         let max = Vector(x: self.position.x + 32, y: self.position.y + 32)

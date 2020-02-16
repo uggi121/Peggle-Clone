@@ -8,9 +8,11 @@
 
 import Foundation
 
+/// Represents a vector on a 2D plane.
 struct Vector {
     let x: Double
     let y: Double
+
     var magnitude: Double {
         sqrt(self.x * self.x + self.y * self.y)
     }
@@ -37,6 +39,7 @@ struct Vector {
         return horizontalDistance * horizontalDistance + verticalDistance * verticalDistance
     }
 
+    /// Returns a vector in the same direction, normalized to unit magnitude.
     func normalize() -> Vector {
         let magnitude = sqrt(self.x * self.x + self.y * self.y)
         return Vector(x: self.x / magnitude, y: self.y / magnitude)
