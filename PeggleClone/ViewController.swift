@@ -10,10 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet var bluePegButton: UIButton!
-    @IBOutlet var orangePegButton: UIButton!
-    @IBOutlet var deletePegButton: UIButton!
-    @IBOutlet var gameView: UIGameView!
+    @IBOutlet private var bluePegButton: UIButton!
+    @IBOutlet private var orangePegButton: UIButton!
+    @IBOutlet private var deletePegButton: UIButton!
+    @IBOutlet private var gameView: UIGameView!
 
     private var model: Model! = nil
     private var doesPersistenceWork = true
@@ -31,20 +31,19 @@ class ViewController: UIViewController {
         initializeModel()
     }
 
-    @IBAction func userTapsBluePegButton(_ sender: UIButton) {
+    @IBAction private func userTapsBluePegButton(_ sender: UIButton) {
         selectButton(sender)
     }
 
-    @IBAction func userTapsOrangePegButton(_ sender: UIButton) {
+    @IBAction private func userTapsOrangePegButton(_ sender: UIButton) {
         selectButton(sender)
     }
 
-    @IBAction func userTapsDeletePegButton(_ sender: UIButton) {
+    @IBAction private func userTapsDeletePegButton(_ sender: UIButton) {
         selectButton(sender)
     }
 
-
-    @IBAction func userPressesStartButton(_ sender: UIButton) {
+    @IBAction private func userPressesStartButton(_ sender: UIButton) {
         gameState = .active
         previous = date.timeIntervalSinceReferenceDate
         let displayLink = CADisplayLink(target: self, selector: #selector(gameLoop))
@@ -63,7 +62,7 @@ class ViewController: UIViewController {
         previous = current
         lag += elapsed
 
-        print(lag)
+        //print(lag)
         /*
         print(lag)
         while lag > (0.0167) {
@@ -103,9 +102,6 @@ class ViewController: UIViewController {
         let topCenterPoint = gameView.topCenterPoint
         let x = tapLocation.x - topCenterPoint.x
         var y = tapLocation.y - topCenterPoint.y
-        if y > 250 {
-            y = 250
-        }
         let launchDirection = Point(x: Double(x), y: -Double(y))
         return launchDirection
     }
@@ -213,7 +209,7 @@ class ViewController: UIViewController {
     private func render() {
         let ballPosition = model.getBallPosition()
         if ballPosition != nil {
-            let correctedPosition = Point(x: ballPosition!.x, y: Double(gameView.frame.height - gameView.frame.origin.y) - ballPosition!.y)
+            let correctedPosition = Point(x: ballPosition!.x, y: Double(gameView.bounds.maxY) - ballPosition!.y)
             let ballImageView = UIPegFactory.makeBallImageView(center: Utils.convertPointToCGPoint(correctedPosition), radius: 16)
             //gameView.removeBallImageView()
             if !isBallActive {
@@ -229,7 +225,7 @@ class ViewController: UIViewController {
         }
 
         let highlightedPegCoordinates = model.getHighlightedPegCoordinates()
-        let adjustedCoordinates = highlightedPegCoordinates.map({ Point(x: $0.x, y: Double(gameView.frame.height - gameView.frame.origin.y) - $0.y) })
+        let adjustedCoordinates = highlightedPegCoordinates.map({ Point(x: $0.x, y: Double(gameView.bounds.maxY) - $0.y) })
         adjustedCoordinates.forEach({ gameView.highlightPeg(at: Utils.convertPointToCGPoint($0)) })
     }
 }

@@ -95,4 +95,10 @@ class GameBoard {
         let highlightedPegs = pegs.filter({ $0.isHighlighted })
         return highlightedPegs.map({ $0.center })
     }
+
+    func removeHighlightedPegs() -> Set<Peg> {
+        let highlightedPegs = pegs.filter({ $0.isHighlighted })
+        pegs.subtract(highlightedPegs)
+        return highlightedPegs
+    }
 }

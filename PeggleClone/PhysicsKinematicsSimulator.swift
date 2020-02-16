@@ -29,9 +29,8 @@ struct PhysicsKinematicsSimulator {
         }
 
         let forces = body.forces
-        let resultantForce = forces.reduce(Vector(x: 0, y: 0), {
-            resultant, vector in
-            return Vector(x: resultant.x + vector.x, y: resultant.y + vector.y)
+        let resultantForce = forces.reduce(Vector(x: 0, y: 0), { resultant, vector in
+            Vector(x: resultant.x + vector.x, y: resultant.y + vector.y)
         })
         let mass = body.mass
         let acceleration = Vector(x: resultantForce.x / mass, y: resultantForce.y / mass)

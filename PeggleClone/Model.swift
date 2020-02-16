@@ -24,7 +24,7 @@ class Model {
         let persistenceDelegate = try SqlitePersistenceManager()
         self.persistenceDelegate = persistenceDelegate
         self.ball = nil
-        self.physicsWorld = PhysicsWorld()
+        self.physicsWorld = PhysicsWorld(xMax: dimensions.xMax, yMax: dimensions.yMax)!
     }
 
     /// Adds a peg to the model.
@@ -97,21 +97,28 @@ class Model {
 
         let topCenterPoint = gameBoard.getTopCenterPoint(offsetFromTop: 16)
         let topCenterPosition = Vector(x: topCenterPoint.x, y: topCenterPoint.y)
-        let launchVelocity = Vector(x: velocity.x, y: velocity.y)
+        var launchVelocity = Vector(x: velocity.x, y: velocity.y)
+        let magnitude = launchVelocity.magnitude
+        let thresholdVelocity = 250.0
+        if magnitude > thresholdVelocity {
+            launchVelocity = launchVelocity.multiplyWithScalar(scalar: 250 / magnitude)
+        }
 
         ball = Ball(position: topCenterPosition, velocity: launchVelocity, radius: 16)
         physicsWorld.addPhysicsBody(body: ball!, tag: "ball")
-        let gravityVector = Vector(x: 0, y: -PhysicsConstants.accelerationDueToGravity * 40)
+        let gravityVector = Vector(x: 0, y: -PhysicsConstants.accelerationDueToGravity * 20)
         physicsWorld.applyForceOnBody(bodyTag: "ball", force: gravityVector)
     }
 
     func updateFor(time: Double) {
-        print(ball?.position.x, ball?.position.y)
+        //print(ball?.position.x, ball?.position.y)
         physicsWorld.simulateFor(time: time)
 
         if ball != nil && ball!.position.y < 16 {
             ball = nil
             _ = physicsWorld.removePhysicsBody(bodyTag: "ball")
+            let removedPegs = gameBoard.removeHighlightedPegs()
+            removedPegs.forEach({ physicsWorld.removePhysicsBody(bodyTag: tagMap.key(forValue: $0.center)!) })
         }
 
         let collidedBodyTags = physicsWorld.simulateCollisions()
@@ -121,7 +128,6 @@ class Model {
                 gameBoard.highlightPeg(at: pegCenter!)
             }
         }
-        
     }
 
     func getBallPosition() -> Point? {

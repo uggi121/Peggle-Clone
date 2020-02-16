@@ -18,6 +18,7 @@
 		C838C19923F85B9F0095E02D /* Ball.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19823F85B9F0095E02D /* Ball.swift */; };
 		C838C19B23F876BA0095E02D /* PegPhysicsBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19A23F876BA0095E02D /* PegPhysicsBody.swift */; };
 		C838C19D23F9580D0095E02D /* UIPegImageView+Fade.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19C23F9580C0095E02D /* UIPegImageView+Fade.swift */; };
+		C838C19F23F97AB70095E02D /* Dictionary+Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = C838C19E23F97AB70095E02D /* Dictionary+Key.swift */; };
 		C8666AAC23F4330B0049F52F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AAB23F4330B0049F52F /* AppDelegate.swift */; };
 		C8666AAE23F4330B0049F52F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AAD23F4330B0049F52F /* SceneDelegate.swift */; };
 		C8666AB023F4330B0049F52F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AAF23F4330B0049F52F /* ViewController.swift */; };
@@ -54,6 +55,7 @@
 		C838C19823F85B9F0095E02D /* Ball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ball.swift; sourceTree = "<group>"; };
 		C838C19A23F876BA0095E02D /* PegPhysicsBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegPhysicsBody.swift; sourceTree = "<group>"; };
 		C838C19C23F9580C0095E02D /* UIPegImageView+Fade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPegImageView+Fade.swift"; sourceTree = "<group>"; };
+		C838C19E23F97AB70095E02D /* Dictionary+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Key.swift"; sourceTree = "<group>"; };
 		C8666AA823F4330B0049F52F /* PeggleClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeggleClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8666AAB23F4330B0049F52F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C8666AAD23F4330B0049F52F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				C8666AC723F4367A0049F52F /* GameBoardDimensions.swift */,
 				C838C19623F858AD0095E02D /* GameState.swift */,
 				C8666AC823F4367A0049F52F /* Model.swift */,
+				C838C19E23F97AB70095E02D /* Dictionary+Key.swift */,
 				C838C19823F85B9F0095E02D /* Ball.swift */,
 				C838C19123F7F3D20095E02D /* Messages.swift */,
 				C838C19023F7F3D20095E02D /* UIGameView.swift */,
@@ -265,6 +268,7 @@
 				C8666ACB23F4367A0049F52F /* PersistenceDelegate.swift in Sources */,
 				C838C19523F7F3D30095E02D /* Messages.swift in Sources */,
 				C8666AD723F43E750049F52F /* PhysicsBody.swift in Sources */,
+				C838C19F23F97AB70095E02D /* Dictionary+Key.swift in Sources */,
 				C838C18D23F7F0E20095E02D /* LevelDesignerConstants.swift in Sources */,
 				C838C18B23F7F0640095E02D /* Utils.swift in Sources */,
 				C8666AD123F4367A0049F52F /* Model.swift in Sources */,

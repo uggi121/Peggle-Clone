@@ -11,6 +11,9 @@ import Foundation
 struct Vector {
     let x: Double
     let y: Double
+    var magnitude: Double {
+        sqrt(self.x * self.x + self.y * self.y)
+    }
 
     func addTo(vector: Vector) -> Vector {
         Vector(x: self.x + vector.x, y: self.y + vector.y)
