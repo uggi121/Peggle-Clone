@@ -54,7 +54,8 @@ struct PhysicsCollisionSimulator {
         return possiblyCollidingBoundingBoxes
     }
 
-    private func resolveAllCollisions(_ bodies: inout [String: PhysicsBody], _ boundingBoxes: [String: BoundingBox]) -> [String] {
+    private func resolveAllCollisions(_ bodies: inout [String: PhysicsBody],
+                                      _ boundingBoxes: [String: BoundingBox]) -> [String] {
         var tagsOfCollidingBodies = [String]()
 
         for (tag, _) in boundingBoxes {
