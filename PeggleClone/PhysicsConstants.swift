@@ -11,4 +11,6 @@ import Foundation
 enum PhysicsConstants {
     static let accelerationDueToGravity = 9.81
     static let coefficientOfRestitution = 0.9
+    static let collisionVelocityMultiplier = 0.8
+    static let collisionPositionMultiplier = 2.0
 }

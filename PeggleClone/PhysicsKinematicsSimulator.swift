@@ -8,9 +8,11 @@
 
 import Foundation
 
+/// Simulates the movement of bodies in the physics world.
 struct PhysicsKinematicsSimulator {
 
-    func simulateWorldFor(time: Double, bodies: inout [String : PhysicsBody]) {
+    /// Simulates the motion of the input `PhysicsBody` objects for the entered amount of time.
+    func simulateWorldFor(time: Double, bodies: inout [String: PhysicsBody]) {
         guard time > 0 else {
             return
         }
@@ -22,8 +24,9 @@ struct PhysicsKinematicsSimulator {
         }
     }
 
-    func calculateAcceleration(_ body: PhysicsBody) -> Vector {
+    private func calculateAcceleration(_ body: PhysicsBody) -> Vector {
 
+        // A body with infinite mass is assumed to be unaccelerable.
         guard body.mass != Double.infinity else {
             return Vector(x: 0, y: 0)
         }
@@ -37,8 +40,9 @@ struct PhysicsKinematicsSimulator {
         return acceleration
     }
 
-    func calculateNewVelocity(body: PhysicsBody, acceleration: Vector, time: Double) -> Vector {
+    private func calculateNewVelocity(body: PhysicsBody, acceleration: Vector, time: Double) -> Vector {
 
+        // A body with infinite mass is assumed to be immovable.
         guard body.mass != Double.infinity else {
             return Vector(x: 0, y: 0)
         }
@@ -49,7 +53,7 @@ struct PhysicsKinematicsSimulator {
         return Vector(x: horizontalVelocity, y: verticalVelocity)
     }
 
-    func calculateNewPosition(body: PhysicsBody, time: Double) -> Vector {
+    private func calculateNewPosition(body: PhysicsBody, time: Double) -> Vector {
         let position = body.position
         let velocity = body.velocity
         let horizontalPosition = position.x + (velocity.x * time)

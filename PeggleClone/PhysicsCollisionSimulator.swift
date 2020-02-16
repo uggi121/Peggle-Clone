@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Simulates collisions between objects.
 struct PhysicsCollisionSimulator {
 
     private let xMin = 0.0
@@ -15,6 +16,8 @@ struct PhysicsCollisionSimulator {
     private let xMax: Double
     private let yMax: Double
 
+    /// Initializes a collision simulator with the specified bounds.
+    /// Returns `nil` if the bounds are non-positive.
     init?(xMax: Double, yMax: Double) {
         guard xMax > self.xMin, yMax > self.yMin else {
             return nil
@@ -24,6 +27,9 @@ struct PhysicsCollisionSimulator {
         self.yMax = yMax
     }
 
+    /// Simulates collisions between the entered `PhysicsBody` objects.
+    /// Resolves collisions and updates the velocities of colliding objects.
+    /// Performs position correction to alleviate overlap where necessary.
     func simulateCollisions(bodies: inout [String : PhysicsBody]) -> [String] {
         let boundingBoxes = bodies.mapValues({ $0.computeBoundingBox() })
         let possiblyCollidingBoxes = getPossiblyCollidingBoxes(boundingBoxes)
@@ -32,7 +38,10 @@ struct PhysicsCollisionSimulator {
         return collidedTags
     }
 
-    private func getPossiblyCollidingBoxes(_ boundingBoxes: [String: BoundingBox]) -> [String : BoundingBox] {
+    /// Performs broad-phase collision detection.
+    /// Uses an AABB bounding box model.
+    /// - Returns: dictionary that maps tags to bounding boxes.
+    private func getPossiblyCollidingBoxes(_ boundingBoxes: [String: BoundingBox]) -> [String: BoundingBox] {
         var possiblyCollidingBoundingBoxes = [String: BoundingBox]()
         for (tag, box) in boundingBoxes {
             for (innerTag, innerBox) in boundingBoxes {
@@ -45,18 +54,11 @@ struct PhysicsCollisionSimulator {
         return possiblyCollidingBoundingBoxes
     }
 
-    private func resolveAllCollisions(_ bodies: inout [String: PhysicsBody], _ boundingBoxes: [String : BoundingBox]) -> [String] {
+    private func resolveAllCollisions(_ bodies: inout [String: PhysicsBody], _ boundingBoxes: [String: BoundingBox]) -> [String] {
         var tagsOfCollidingBodies = [String]()
-        //var collisionMap = [String: Set<String>]()
-        //boundingBoxes.map({ $0.key }).forEach({ collisionMap[$0] = Set<String>() })
+
         for (tag, _) in boundingBoxes {
             for (innerTag, _) in boundingBoxes where tag != innerTag {
-                /*
-                collisionMap[innerTag]!.insert(tag)
-                guard !collisionMap[tag]!.contains(innerTag) else {
-                    continue
-                }
-                */
 
                 if areColliding(bodies[tag]!, bodies[innerTag]!) {
                     tagsOfCollidingBodies.append(tag)
@@ -89,6 +91,7 @@ struct PhysicsCollisionSimulator {
         return squareDistance < (sumOfRadii * sumOfRadii)
     }
 
+    /// Resolves velocities of the colliding objects by impulse resolution.
     private func resolveCollision(_ firstTag: String, _ secondTag: String, _ bodies: inout [String: PhysicsBody]) {
         guard let firstObject = bodies[firstTag],
             let secondObject = bodies[secondTag] else {
@@ -100,24 +103,30 @@ struct PhysicsCollisionSimulator {
         let collisionNormal = findCollisionNormal(firstObject, secondObject)
         let velocityAlongNormal = relativeVelocity.dotProductWith(vector: collisionNormal)
 
-        /*
-        if velocityAlongNormal > 0 {
-            return
-        }
-        */
+        let impulseVector = calculateImpulse(collisionNormal: collisionNormal, velocityAlongNormal: velocityAlongNormal, massOfFirstObject: firstObject.mass, massOfSecondObject: secondObject.mass)
 
-        var impulse = -(1 + PhysicsConstants.coefficientOfRestitution) * velocityAlongNormal
-        impulse /= (1 / firstObject.mass) + (1 / secondObject.mass)
-
-        let impulseVector = collisionNormal.multiplyWithScalar(scalar: impulse)
-        let firstObjectVelocityChange = impulseVector.multiplyWithScalar(scalar: 0.8 / firstObject.mass)
-        let secondObjectVelocityChange = impulseVector.multiplyWithScalar(scalar: 0.8 / secondObject.mass)
+        let firstObjectVelocityChange = impulseVector.multiplyWithScalar(scalar: PhysicsConstants.collisionVelocityMultiplier / firstObject.mass)
+        let secondObjectVelocityChange = impulseVector.multiplyWithScalar(scalar: PhysicsConstants.collisionVelocityMultiplier / secondObject.mass)
 
         bodies[firstTag]!.velocity = (bodies[firstTag]?.velocity.subtract(vector: firstObjectVelocityChange))!
         bodies[secondTag]!.velocity = (bodies[secondTag]?.velocity.addTo(vector: secondObjectVelocityChange))!
 
     }
 
+    /// Calculates the impulse vector between two colliding objects.
+    /// - Returns: `Vector` representing the impulse.
+    private func calculateImpulse(collisionNormal: Vector,
+                                  velocityAlongNormal: Double,
+                                  massOfFirstObject: Double,
+                                  massOfSecondObject: Double) -> Vector {
+        var impulse = -(1 + PhysicsConstants.coefficientOfRestitution) * velocityAlongNormal
+        impulse /= (1 / massOfFirstObject) + (1 / massOfSecondObject)
+
+        let impulseVector = collisionNormal.multiplyWithScalar(scalar: impulse)
+        return impulseVector
+    }
+
+    /// Returns the normalized collision normal vector between two colliding objects.
     private func findCollisionNormal(_ firstBody: PhysicsBody, _ secondBody: PhysicsBody) -> Vector {
         let firstShape = firstBody.shape
         let secondShape = secondBody.shape
@@ -146,22 +155,35 @@ struct PhysicsCollisionSimulator {
             let distance = sqrt(firstBody!.position.squareDistanceTo(vector: secondBody!.position))
             let sumOfRadii = firstRadius + secondRadius
             let penetration = sumOfRadii - distance
-            guard penetration > 0 else {
-                return
-            }
-            let collisionNormal = findCollisionNormal(firstBody!, secondBody!)
-            let percent = 1.0
-            let threshold = 0.01
-            let correctionScalar = max(penetration - threshold, 0.0) / (1 / firstBody!.mass + 1 / secondBody!.mass) * percent
-            let correctionVector = collisionNormal.multiplyWithScalar(scalar: correctionScalar)
-            let firstBodyCorrection = correctionVector.multiplyWithScalar(scalar: 2 / firstBody!.mass)
-            let secondBodyCorrection = correctionVector.multiplyWithScalar(scalar: 2 / secondBody!.mass)
+            correctCollidingCirclePositions(firstTag, secondTag, &bodies, penetration)
+        }
+    }
 
-            bodies[firstTag]!.position = firstBody!.position.subtract(vector: firstBodyCorrection)
-            bodies[secondTag]!.position = secondBody!.position.subtract(vector: secondBodyCorrection)
-        default:
+    private func correctCollidingCirclePositions(_ firstTag: String, _ secondTag: String, _ bodies: inout [String: PhysicsBody], _ penetration: Double) {
+
+        guard penetration > 0 else {
             return
         }
+
+        let firstBody = bodies[firstTag]
+        let secondBody = bodies[secondTag]
+
+        guard firstBody != nil, secondBody != nil else {
+            return
+        }
+
+        let collisionNormal = findCollisionNormal(firstBody!, secondBody!)
+        let positionCorrectionPercentageMultipler = 1.0
+        let threshold = 0.01
+
+        let correctionScalar = max(penetration - threshold, 0.0) / (1 / firstBody!.mass + 1 / secondBody!.mass) * positionCorrectionPercentageMultipler
+        let correctionVector = collisionNormal.multiplyWithScalar(scalar: correctionScalar)
+
+        let firstBodyCorrection = correctionVector.multiplyWithScalar(scalar: PhysicsConstants.collisionPositionMultiplier / firstBody!.mass)
+        let secondBodyCorrection = correctionVector.multiplyWithScalar(scalar: PhysicsConstants.collisionPositionMultiplier / secondBody!.mass)
+
+        bodies[firstTag]!.position = firstBody!.position.subtract(vector: firstBodyCorrection)
+        bodies[secondTag]!.position = secondBody!.position.subtract(vector: secondBodyCorrection)
     }
 
     private func resolveBoundaryCollisions(_ bodies: inout [String: PhysicsBody]) {
