@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     private var model: Model! = nil
     private var doesPersistenceWork = true
     private var gameState: GameState = .inactive
+    private var isBallActive = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,38 +46,17 @@ class ViewController: UIViewController {
 
     @IBAction private func userPressesStartButton(_ sender: UIButton) {
         gameState = .active
-        previous = date.timeIntervalSinceReferenceDate
         let displayLink = CADisplayLink(target: self, selector: #selector(gameLoop))
         displayLink.preferredFramesPerSecond = 60
         displayLink.add(to: .main, forMode: .default)
     }
 
-    let date = Date()
-    var previous: TimeInterval!
-    var lag = 0.0
-
     @objc private func gameLoop(displayLink: CADisplayLink) {
-        //print(displayLink.timestamp)
-        let current = date.timeIntervalSinceReferenceDate
-        var elapsed = current - previous
-        previous = current
-        lag += elapsed
-
-        //print(lag)
-        /*
-        print(lag)
-        while lag > (0.0167) {
-            print(displayLink.timestamp)
-            model.updateFor(time: 0.0167)
-            lag -= 0.0167
-        }
-        */
         model.updateFor(time: 0.0167)
-
         render()
     }
 
-    @IBAction func userTapsGameBoard(_ sender: UITapGestureRecognizer) {
+    @IBAction private func userTapsGameBoard(_ sender: UITapGestureRecognizer) {
 
         switch gameState {
         case .inactive:
@@ -101,7 +81,7 @@ class ViewController: UIViewController {
     private func getBallLaunchVelocity(tapLocation: CGPoint) -> Point {
         let topCenterPoint = gameView.topCenterPoint
         let x = tapLocation.x - topCenterPoint.x
-        var y = tapLocation.y - topCenterPoint.y
+        let y = tapLocation.y - topCenterPoint.y
         let launchDirection = Point(x: Double(x), y: -Double(y))
         return launchDirection
     }
@@ -205,27 +185,33 @@ class ViewController: UIViewController {
         gameView.removePegView(at: Utils.convertPointToCGPoint(locationOfRemovedPeg))
     }
 
-    var isBallActive = false
+    private func renderBallAt(_ ballPosition: Point?) {
+        let correctedPosition = Point(x: ballPosition!.x, y: Double(gameView.bounds.maxY) - ballPosition!.y)
+        let ballImageView = UIPegFactory.makeBallImageView(center: Utils.convertPointToCGPoint(correctedPosition), radius: 16)
+        if !isBallActive {
+            gameView.addBallImageView(ballImageView)
+            isBallActive = true
+        } else {
+            gameView.moveBallTo(Utils.convertPointToCGPoint(correctedPosition))
+        }
+    }
+
+    private func renderHighlightedPegs() {
+        let highlightedPegCoordinates = model.getHighlightedPegCoordinates()
+        let adjustedCoordinates = highlightedPegCoordinates.map({ Point(x: $0.x, y: Double(gameView.bounds.maxY) - $0.y) })
+        adjustedCoordinates.forEach({ gameView.highlightPeg(at: Utils.convertPointToCGPoint($0)) })
+    }
+
     private func render() {
         let ballPosition = model.getBallPosition()
         if ballPosition != nil {
-            let correctedPosition = Point(x: ballPosition!.x, y: Double(gameView.bounds.maxY) - ballPosition!.y)
-            let ballImageView = UIPegFactory.makeBallImageView(center: Utils.convertPointToCGPoint(correctedPosition), radius: 16)
-            //gameView.removeBallImageView()
-            if !isBallActive {
-                gameView.addBallImageView(ballImageView)
-                isBallActive = true
-            } else {
-                gameView.moveBallTo(Utils.convertPointToCGPoint(correctedPosition))
-            }
+            renderBallAt(ballPosition)
         } else {
             gameView.removeBallImageView()
             gameView.popHighlightedPegs()
             isBallActive = false
         }
 
-        let highlightedPegCoordinates = model.getHighlightedPegCoordinates()
-        let adjustedCoordinates = highlightedPegCoordinates.map({ Point(x: $0.x, y: Double(gameView.bounds.maxY) - $0.y) })
-        adjustedCoordinates.forEach({ gameView.highlightPeg(at: Utils.convertPointToCGPoint($0)) })
+        renderHighlightedPegs()
     }
 }
