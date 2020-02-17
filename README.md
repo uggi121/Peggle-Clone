@@ -64,6 +64,10 @@ Pegs are modeled by the class `Peg` and represented in the physics engine as `Pe
 
 The game engine, through the class `Model`, exposes an API that allows addition and removal of pegs and balls, along with the simulation of the game world.
 
+The below class diagram summarizes the above.
+
+![Model](assets/Class Diagram.png)
+
 ### View
 
 The view is largely unchanged from PS2 and consists of a `UIGameView` class that presents the game board to the user. Pegs are visually represented by `UIPegImageView`, which subclasses `UIImageView`. `UIGameView` exposes methods to add and remove balls and pegs to the UI, highlight them and make them fade away. It displays the balls and pegs to the users by maintaining them as sub-views in the view hierarchy.
@@ -75,9 +79,82 @@ The helper class `UIPegFactory` helps create images of the pegs and balls of the
 The controller in this application is the class `ViewController`. Its role is to mediate interaction between the view and the model components. This includes calling appropriate action methods in response to events from the UI, translating information from presentation logic to domain logic and passing it to the model, receiving a response from the model and translating it to presentation logic to update the view. The controller thus ensures that the view and the model are in sync when the application is run.
 
 ## Tests
-If you decide to write how you are going to do your tests instead of writing
-actual tests, please write in this section. If you decide to write all of your
-tests in code, please delete this section.
+
+Unit tests from PS2 have been re-used for the classes `GameBoard`, `GameBoardDimensions`, `Peg` and `Point`.
+
+In addition to these, I propose the following unit tests.
+
+### Unit Tests
+
+* GameBoard.swift
+    * Method - getTopCenterPoint(offsetFromTop: Double)
+        * When offsetFromTop is negative, it should return nil
+        * When offsetFromTop is greater than the height, it should return nil
+        * When offsetFromTop is between 0 and the height, it should return a point with x coordinate at width / 2, and y coordinate at height - offsetFromTop.
+    * Method - highlightPeg(at: Point)
+        * When the point entered isn't contained by a peg, it should do nothing.
+        * When the point entered is contained by a peg, peg.isHighlighted should be true
+    * Method - removeHighlightedPegs()
+        * When called, it should return a set of pegs which were highlighted.
+    * General
+        * When a peg is added and highlighted, calling removeHighlightedPegs() should return a set containing the added peg. Calling this method again should return an empty set.
+* PhysicsKinematicsSimulator.swift
+    * Method - simulateWorldFor(time: Double, bodies: dict(String: PhysicsBody))
+        * When time is negative, it should do nothing.
+        * When time is positive, it should update the positions of the bodies to position + velocity * time and velocity to velocity + acceleration * time.
+        * When time is 1.0 and the dict contains a body of mass 1 kg with position 5x + 5y, velocity 5x + 5y and forces 5x and 5y, the body's position should be 10x + 10y and velocity should be 10x + 10y, leaving other properties unchanged.
+* PhysicsCollisionSimulator.swift
+    * Initializer - (xMax: Double, yMax: Double)
+        * When xMax is non-positive, it should return nil
+        * When yMax is non-positive, it should return nil
+        * When xMax and yMax are positive, it should return the object.
+    * Method - simulateCollisions()
+        * When there are two bodies that intersect each other, their velocities should be adjusted following collision. Their positions should be adjusted to ensure they no longer overlap.
+        * When there is a body at the left or right boundary of the physics world, its horizontal velocity should be reversed.
+        * When there is a body at the top or bottom boundary of the physics world, its vertical velocity should be reversed.
+        * When there is a body of infinite mass, it should be unmoved after collisions.
+* PhysicsWorld.swift
+    * Initializer - (xMax: Double, yMax: Double)
+        * When xMax or yMax are non-positive, it should return nil
+    * Method - addPhysicsBody(body: PhysicsBody, tag: String)
+        * When a body with the entered tag already exists, it should return false and not add the object.
+        * When a body with a unique tag is input, it should add the body and return true.
+    * Method - removePhysicsBody(tag: String)
+        * When no body with the entered tag exists, it should return nil
+        * When a body with the entered tag exists, it should return the body and remove it from the world.
+    * Method - applyForceOnBody(tag: String, force: Vector)
+        * When no body with the entered tag exists, it should do nothing
+        * When a body with the entered tag exists, it should add the force to the body's list of forces.
+    * Method - removeForcesOnBody(tag: String)
+        * When no body with the entered tag exists, it should do nothing.
+        * When a body with the entered tag exists, it should empty the body's list of forces.
+        
+### Integration Tests
+
+* Peg Placement
+    * Pegs can only be placed before the `start` button is pressed. After `start` is pressed, pegs cannot be placed.
+    * Pegs can be placed anywhere on the board except the edges.
+    * When tapped at the top center of the screen, nothing should happen (since the ball will be launched from here)
+* Ball Launch
+    * Before `start` button is pressed
+        * When tapped, no ball should be launched.
+    * After `start` button is pressed
+        * When tapped with no ball in play, a ball should be launched from the top center in the direction of the tap location. 
+        * When tapped with an existing ball in play, nothing should happen.
+        * When tapped closer to the top center, the ball should launch with a low velocity.
+        * When tapped far away from the top center, the ball should launch with a high velocity.
+        * When tapped beyond the distance corresponding to the velocity threshold, the ball should launch with the threshold velocity.
+* Ball Movement
+    * When tapped, the ball's initial velocity should be in the direction of the tap location, with a downward drift due to gravity.
+* Collisions
+    * When launched towards the side walls, the ball's horizontal velocity should be reversed.
+    * When colliding with pegs, the ball should bounce away from the peg depending on the collision normal.
+    * When colliding at a lesser velocity, the ball should bounce to a lesser height.
+    * When wedged between two consecutively placed pegs, the ball should remain at the wedged location.
+* Peg Highlighting and Removal
+    * When the ball collides against a peg, the peg should highlight and remain lit.
+    * When the ball exits the stage, all highlighted pegs should fade out.
+    * When a new ball is launched, it should be able to pass through *fading* pegs without colliding.
 
 ## Written Answers
 
@@ -92,4 +169,68 @@ tests in code, please delete this section.
 > `foo` instead of `bar`. Explain what are the advantages and disadvantages of
 > using `foo` and `bar`, and why you decided to go with `foo`.
 
-Your answer here
+#### Design Consideration - Shape of PhysicsBody
+
+Apart from physical quantities like mass, velocity, position and so forth, a fundamental property of rigid bodies is shape. In my case, the protocol `PhysicsBody` was quite easy to formulate in terms of other physical properties. However, I had to greatly deliberate about the incorporation of a shape to the rigid bodies.
+
+##### Alternative - Make Separate Protocols 
+
+One way I could solve this problem was by making separate protocols - each protocol conforming to `PhysicsBody` - to represent different shapes, like `CircularPhysicsBody`, `RectangularPhysicsBody`, and so on.
+
+Pros:-
+
+* Each protocol only needs to address the idiosyncrasies of its associated shape.
+
+Cons:-
+
+* Need to make a new protocol for every additional shape supported.
+* Could lead to a complex hierarchy by introducing more shapes.
+* Possible to have `PhysicsBody` objects without a shape.
+
+##### Alternative - Use an Enumeration
+
+In this case, an enumeration `Shape` is created to support a number of different shapes in the form of associated types. The protocol `PhysicsBody` has an additional attribute shape which stores the shape of the body. This is akin to saying that shape is a characteristic of rigid bodies.
+
+Pros:-
+
+* Uses composition over inheritance
+* Easy to implement
+
+Cons:- 
+
+* Having too many shapes could make switch statements verbose.
+* Convoluted process to get associated type information.
+
+I decided to use an enumeration since this forces `PhysicsBody` objects to have a shape. I couldn't find any major differences between the two alternatives, but chose to use an enumeration due to ease of implementation. In hindsight, another alternative could be to make protocols belonging to shapes unrelated to PhysicsBody, like `Circular`, `Rectangular`, etc.  This method will also allow `PhysicsBody` objects to be made without shapes, however. Ultimately, all three methods will run into the same complexities in collision handling.
+
+#### Design Consideration - Physics Engine Design
+
+##### Alternative - Physics Engine Only Simulates
+
+The physics engine only provides methods to simulate an existing collection of objects. It doesn't have the ability to store a collection of objects.
+
+Pros:-
+
+* Physics engine has a single limited responsibility.
+* Since only the model has a collection of objects, it is easier on the memory. There is no need to tag objects.
+
+Cons:-
+
+* Model has to keep track of physical properties of objects that are more relevant to the physics engine, like mass, velocity and forces acting on the object.
+
+##### Alternative - Physics Engine has State
+
+The physics engine stores a collection of `PhysicsBody` objects and provides methods to add them.
+
+Pros:-
+
+* Physics engine is self limiting
+* Physical quantities are handled through methods exposed by the physics engine, easing the burden on the model.
+
+Cons:-
+
+* Maintaining two collections of the same objects, albeit via different classes burdens the memory.
+* Need to maintain tags to facilitate communication between model and physics engine.
+
+I chose to go for a stateful physics engine since this makes model quite simple. Since memory isn't a major issue when objects aren't ubiquitous, I felt that this was a fair trade off.
+
