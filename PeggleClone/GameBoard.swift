@@ -90,7 +90,7 @@ class GameBoard {
 
     /// Returns the `Point` at the top-center of the game board, vertically shifted by the entered offset.
     func getTopCenterPoint(offsetFromTop: Double) -> Point? {
-        guard dimensions.yMax - offsetFromTop > dimensions.yMin else {
+        guard dimensions.yMax - offsetFromTop > dimensions.yMin, offsetFromTop > 0 else {
             return nil
         }
 
