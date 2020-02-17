@@ -66,7 +66,10 @@ class GameBoard {
             return false
         }
 
-        let topCenter = getTopCenterPoint(offsetFromTop: GameEngineConstants.ballRadius)
+        guard let topCenter = getTopCenterPoint(offsetFromTop: GameEngineConstants.ballRadius) else {
+            return false
+        }
+
         let distanceFromTopCenter = topCenter.calculateDistanceTo(point: peg.center)
 
         if distanceFromTopCenter < GameEngineConstants.ballRadius + GameEngineConstants.pegRadius {
@@ -85,9 +88,13 @@ class GameBoard {
         return sumOfRadii > distanceBetweenCenters
     }
 
-    /// Returns the `Point` at the top-center of the game board.
-    func getTopCenterPoint(offsetFromTop: Double) -> Point {
-        Point(x: (dimensions.xMax + dimensions.xMin) / 2, y: dimensions.yMax - offsetFromTop)
+    /// Returns the `Point` at the top-center of the game board, vertically shifted by the entered offset.
+    func getTopCenterPoint(offsetFromTop: Double) -> Point? {
+        guard dimensions.yMax - offsetFromTop > dimensions.yMin else {
+            return nil
+        }
+
+        return Point(x: (dimensions.xMax + dimensions.xMin) / 2, y: dimensions.yMax - offsetFromTop)
     }
 
     /// Highlights the `Peg` present at the input `Point`.

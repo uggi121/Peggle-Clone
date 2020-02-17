@@ -97,7 +97,10 @@ class Model {
             return
         }
 
-        let topCenterPoint = gameBoard.getTopCenterPoint(offsetFromTop: GameEngineConstants.ballRadius)
+        guard let topCenterPoint = gameBoard.getTopCenterPoint(offsetFromTop: GameEngineConstants.ballRadius) else {
+            return
+        }
+
         let topCenterPosition = Vector(x: topCenterPoint.x, y: topCenterPoint.y)
         var launchVelocity = Vector(x: velocity.x, y: velocity.y)
         let magnitude = launchVelocity.magnitude
