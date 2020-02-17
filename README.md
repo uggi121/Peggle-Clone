@@ -66,7 +66,7 @@ The game engine, through the class `Model`, exposes an API that allows addition 
 
 The below class diagram summarizes the above.
 
-![Model](assets/Class Diagram.png)
+![Model](assets/class-diagram.png)
 
 ### View
 
