@@ -187,7 +187,8 @@ class ViewController: UIViewController {
 
     private func renderBallAt(_ ballPosition: Point?) {
         let correctedPosition = Point(x: ballPosition!.x, y: Double(gameView.bounds.maxY) - ballPosition!.y)
-        let ballImageView = UIPegFactory.makeBallImageView(center: Utils.convertPointToCGPoint(correctedPosition), radius: 16)
+        let ballImageView = UIPegFactory.makeBallImageView(center: Utils.convertPointToCGPoint(correctedPosition),
+                                                           radius: GameEngineConstants.ballRadius)
         if !isBallActive {
             gameView.addBallImageView(ballImageView)
             isBallActive = true
@@ -198,7 +199,8 @@ class ViewController: UIViewController {
 
     private func renderHighlightedPegs() {
         let highlightedPegCoordinates = model.getHighlightedPegCoordinates()
-        let adjustedCoordinates = highlightedPegCoordinates.map({ Point(x: $0.x, y: Double(gameView.bounds.maxY) - $0.y) })
+        let adjustedCoordinates = highlightedPegCoordinates
+            .map({ Point(x: $0.x, y: Double(gameView.bounds.maxY) - $0.y) })
         adjustedCoordinates.forEach({ gameView.highlightPeg(at: Utils.convertPointToCGPoint($0)) })
     }
 
