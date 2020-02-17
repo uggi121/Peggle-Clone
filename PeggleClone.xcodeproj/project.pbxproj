@@ -44,6 +44,16 @@
 		C8666AE123F6B7070049F52F /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8666AE023F6B7070049F52F /* BoundingBox.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C838C1AF23FAB70F0095E02D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8666AA023F4330B0049F52F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C8666AA723F4330B0049F52F;
+			remoteInfo = PeggleClone;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		C8380BFF23F7E0BA004512EA /* PhysicsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsConstants.swift; sourceTree = "<group>"; };
 		C838C18A23F7F0640095E02D /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Utils.swift; path = ../../../PS2/Peggle/Utils.swift; sourceTree = "<group>"; };
@@ -58,6 +68,8 @@
 		C838C19C23F9580C0095E02D /* UIPegImageView+Fade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPegImageView+Fade.swift"; sourceTree = "<group>"; };
 		C838C19E23F97AB70095E02D /* Dictionary+Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Key.swift"; sourceTree = "<group>"; };
 		C838C1A223F9E5050095E02D /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
+		C838C1AA23FAB70F0095E02D /* PeggleCloneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeggleCloneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C838C1AE23FAB70F0095E02D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8666AA823F4330B0049F52F /* PeggleClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeggleClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8666AAB23F4330B0049F52F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C8666AAD23F4330B0049F52F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +97,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C838C1A723FAB70E0095E02D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C8666AA523F4330B0049F52F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -95,10 +114,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C838C1AB23FAB70F0095E02D /* PeggleCloneTests */ = {
+			isa = PBXGroup;
+			children = (
+				C838C1AE23FAB70F0095E02D /* Info.plist */,
+			);
+			path = PeggleCloneTests;
+			sourceTree = "<group>";
+		};
 		C8666A9F23F4330B0049F52F = {
 			isa = PBXGroup;
 			children = (
 				C8666AAA23F4330B0049F52F /* PeggleClone */,
+				C838C1AB23FAB70F0095E02D /* PeggleCloneTests */,
 				C8666AA923F4330B0049F52F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				C8666AA823F4330B0049F52F /* PeggleClone.app */,
+				C838C1AA23FAB70F0095E02D /* PeggleCloneTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -157,6 +186,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		C838C1A923FAB70E0095E02D /* PeggleCloneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C838C1B123FAB70F0095E02D /* Build configuration list for PBXNativeTarget "PeggleCloneTests" */;
+			buildPhases = (
+				C838C1A623FAB70E0095E02D /* Sources */,
+				C838C1A723FAB70E0095E02D /* Frameworks */,
+				C838C1A823FAB70E0095E02D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C838C1B023FAB70F0095E02D /* PBXTargetDependency */,
+			);
+			name = PeggleCloneTests;
+			productName = PeggleCloneTests;
+			productReference = C838C1AA23FAB70F0095E02D /* PeggleCloneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C8666AA723F4330B0049F52F /* PeggleClone */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C8666ABC23F4330D0049F52F /* Build configuration list for PBXNativeTarget "PeggleClone" */;
@@ -185,6 +232,10 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Sudharshan Madhavan";
 				TargetAttributes = {
+					C838C1A923FAB70E0095E02D = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = C8666AA723F4330B0049F52F;
+					};
 					C8666AA723F4330B0049F52F = {
 						CreatedOnToolsVersion = 11.3.1;
 					};
@@ -204,11 +255,19 @@
 			projectRoot = "";
 			targets = (
 				C8666AA723F4330B0049F52F /* PeggleClone */,
+				C838C1A923FAB70E0095E02D /* PeggleCloneTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C838C1A823FAB70E0095E02D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C8666AA623F4330B0049F52F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -242,6 +301,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C838C1A623FAB70E0095E02D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C8666AA423F4330B0049F52F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -283,6 +349,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		C838C1B023FAB70F0095E02D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C8666AA723F4330B0049F52F /* PeggleClone */;
+			targetProxy = C838C1AF23FAB70F0095E02D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		C8666AB123F4330B0049F52F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -303,6 +377,44 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C838C1B223FAB70F0095E02D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = PeggleCloneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ps2.PeggleCloneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PeggleClone.app/PeggleClone";
+			};
+			name = Debug;
+		};
+		C838C1B323FAB70F0095E02D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = PeggleCloneTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ps2.PeggleCloneTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PeggleClone.app/PeggleClone";
+			};
+			name = Release;
+		};
 		C8666ABA23F4330D0049F52F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -427,7 +539,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ps2.PeggleClone;
+				PRODUCT_BUNDLE_IDENTIFIER = ps3.PeggleClone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -444,7 +556,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = ps2.PeggleClone;
+				PRODUCT_BUNDLE_IDENTIFIER = ps3.PeggleClone;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -454,6 +566,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C838C1B123FAB70F0095E02D /* Build configuration list for PBXNativeTarget "PeggleCloneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C838C1B223FAB70F0095E02D /* Debug */,
+				C838C1B323FAB70F0095E02D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C8666AA323F4330B0049F52F /* Build configuration list for PBXProject "PeggleClone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
