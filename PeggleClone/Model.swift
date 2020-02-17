@@ -116,7 +116,7 @@ class Model {
         ball = nil
         _ = physicsWorld.removePhysicsBody(bodyTag: GameEngineConstants.ballTag)
         let removedPegs = gameBoard.removeHighlightedPegs()
-        _ = removedPegs.forEach({ physicsWorld.removePhysicsBody(
+        _ = removedPegs.forEach({ _ = physicsWorld.removePhysicsBody(
             bodyTag: tagMap.key(forValue: $0.center)!) })
     }
 
