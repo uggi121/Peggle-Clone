@@ -66,6 +66,13 @@ class GameBoard {
             return false
         }
 
+        let topCenter = getTopCenterPoint(offsetFromTop: GameEngineConstants.ballRadius)
+        let distanceFromTopCenter = topCenter.calculateDistanceTo(point: peg.center)
+
+        if distanceFromTopCenter < GameEngineConstants.ballRadius + GameEngineConstants.pegRadius {
+            return false
+        }
+
         return true
     }
 

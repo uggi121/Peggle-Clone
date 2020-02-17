@@ -13,5 +13,5 @@ enum PhysicsConstants {
     static let coefficientOfRestitution = 0.9
     static let collisionVelocityMultiplier = 0.9
     static let collisionPositionMultiplier = 1.5
-    static let thresholdBallLaunchVelocity = 350.0
+    static let thresholdBallLaunchVelocity = 300.0
 }
